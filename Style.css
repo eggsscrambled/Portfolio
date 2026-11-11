@@ -11,7 +11,9 @@
        padding-top: 275px;
        font-family: 'Inter', sans-serif;
        text-shadow: 0px 0px 10px rgb(8, 84, 248);
-          transition: font-size 0.5s ease;
+          transition: font-size 0.5s ease,
+          padding-top 1s ease;
+
    }
 
    h4{
@@ -21,6 +23,21 @@
        font-family: 'Space Mono', monospace;
        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.575);
       transition: font-size 0.2s ease;
+   }
+
+    h5{
+       padding-left: 50px;
+       padding-right: 50px;
+       font-size: 20px;
+       text-align: center;
+       padding-top: 100px;
+       font-family: 'Inter', sans-serif;
+       text-shadow: 0px 0px 10px rgba(88, 167, 173, 0);
+       color: rgba(91, 3, 253, 0);
+
+      transition: color 0.25s ease,
+      text-shadow 0.5s ease;
+
    }
 
    cursor: url("cursor.png"), auto;
@@ -40,7 +57,7 @@
    h1{
        font-size: 150px;
        text-align: center;
-       padding-top: 275px;
+       padding-top: 75px;
        font-family: 'Inter', sans-serif;
        text-shadow: 0px 0px 10px rgb(8, 84, 248);
    }
@@ -52,6 +69,23 @@
        font-family: 'Space Mono', monospace;
        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.575);
    }
+
+   h5{
+      padding-left: 50px;
+      padding-right: 50px;
+       font-size: 20px;
+       text-align: center;
+       padding-top: 100px;
+       font-family: 'Inter', sans-serif;
+       text-shadow: 0px 0px 10px rgba(88, 168, 173, 0.897);
+       color: rgb(162, 213, 255);
+
+      transition: color 0.75s ease,
+      text-shadow 0.75s ease;
+
+   }
+
+   
 
    cursor: url("cursor.png"), auto;
 }
