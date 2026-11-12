@@ -171,7 +171,7 @@ body {
    flex-wrap: wrap;
    justify-content: center;
    align-content: flex-start;
-   height: 200px;
+   min-height: 200px;
    color: rgba(255, 255, 255, 0.836);
 
    background-color: black;
@@ -198,6 +198,20 @@ body {
 
 .HardSkills h4{
    flex-basis: 100%;
+}
+
+.HardSkillsImage{
+   flex: 0 0 100%;
+   display: flex;
+   justify-content: center;
+   margin-bottom: 25px;
+   margin-top: 25px;
+}
+
+.HardSkillsImage img{
+   width: 500px;
+   height: auto;
+   object-fit: contain;
 }
 
 .HardSkill{
@@ -521,4 +535,84 @@ body {
 #skillsDescription.show {
     opacity: 1;
     transform: translateX(0);
+}
+
+.Refs{
+   
+}
+
+.box1 {
+
+   margin-left: auto;
+   margin-right: auto;
+
+   margin-top: 25px;
+
+   height: 1390px;
+   width: 30%;
+
+    border: 5px solid transparent;
+    border-radius: 50px;
+
+    background:
+        linear-gradient(#070a31, #020227) padding-box,
+        linear-gradient(
+            90deg,
+            #2d59e9,
+            #24145f,
+            #0503aa,
+            #4e1ebe
+        ) border-box;
+
+    background-size: 100% 100%, 300% 100%;
+    animation: borderMove 6s linear infinite;
+
+    transition: border, 0.25s ease;
+}
+
+@keyframes borderMove {
+    0% {
+        background-position: 0 0, 0% 50%;
+    }
+
+    100% {
+        background-position: 0 0, 300% 50%;
+    }
+}
+
+.box1:hover{
+
+   margin-left: auto;
+   margin-right: auto;
+
+   margin-top: 25px;
+
+   height: 1390px;
+   width: 30%;
+
+    border: 10px solid transparent;
+    border-radius: 50px;
+
+    background:
+        linear-gradient(#070a31, #020227) padding-box,
+        linear-gradient(
+            90deg,
+            #2d59e9,
+            #24145f,
+            #0503aa,
+            #4e1ebe
+        ) border-box;
+
+    background-size: 100% 100%, 300% 100%;
+    animation: borderMove 2.5s linear infinite;
+}
+
+@keyframes borderMove {
+    0% {
+        background-position: 0 0, 0% 50%;
+    }
+
+    100% {
+        background-position: 0 0, 300% 50%;
+    }
 }

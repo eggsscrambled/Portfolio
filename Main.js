@@ -32,7 +32,7 @@ window.addEventListener("scroll", () => {
         paragraph1.classList.remove("show");
     }
 
-    if (window.scrollY > 1000) {
+    if (window.scrollY > 950) {
         text2.classList.add("show");
         paragraph2.classList.add("show");
     }
