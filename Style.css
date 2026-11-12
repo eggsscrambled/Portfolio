@@ -296,6 +296,8 @@ body {
    background-color: rgb(153, 0, 255);
 }
 
+
+
 .Python{ 
    
    border: 3px solid rgb(255, 255, 255);
@@ -450,7 +452,6 @@ body {
 
 
 
-
 .Statment{
    
    display: flex;
@@ -537,37 +538,84 @@ body {
     transform: translateX(0);
 }
 
-.Refs{
-   
+.refrences{
+   margin-left: auto;
+   margin-right: auto;
+
+
+   height: 1450px;
+   width: 35%;
+
+
+}
+
+.vertbox{
+   padding-top: 20px;
+   padding-left: 20px;
+   float: left;
+   height: 100%;
+}
+
+.headerbar{
+   font-size: 100px;
+	font-family: 'Orbitron', sans-serif;
+
+   background: linear-gradient(90deg, #58567d, #ddd8ed);
+    
+    background-clip: text;
+    -webkit-background-clip: text;
+    
+    color: transparent;
+    -webkit-text-fill-color: transparent;
 }
 
 .box1 {
+    margin-left: 22.5%;
+    margin-top: 50px;
 
-   margin-left: auto;
-   margin-right: auto;
+    height: 300px;
+    width: 65%;
 
-   margin-top: 25px;
-
-   height: 1390px;
-   width: 30%;
-
-    border: 5px solid transparent;
+    border: 1px solid rgba(140, 80, 255, 0.18);
     border-radius: 50px;
 
     background:
-        linear-gradient(#070a31, #020227) padding-box,
         linear-gradient(
-            90deg,
-            #2d59e9,
-            #24145f,
-            #0503aa,
-            #4e1ebe
-        ) border-box;
+            135deg,
+            rgba(78, 30, 190, 0.203),
+            rgba(36, 20, 95, 0.128),
+            rgba(6, 3, 170, 0.06)
+        ) padding-box;
 
-    background-size: 100% 100%, 300% 100%;
-    animation: borderMove 6s linear infinite;
+    box-shadow:
+        0 0 30px rgba(78, 30, 190, 0.363),
+        inset 0 0 30px rgba(78, 30, 190, 0.04);
 
-    transition: border, 0.25s ease;
+    transition: 0.25s ease;
+}
+
+.box1:hover {
+    margin-left: 22.5%;
+    margin-top: 50px;
+
+    height: 300px;
+    width: 65%;
+
+    border: 1px solid rgba(140, 80, 255, 0.18);
+    border-radius: 50px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(78, 30, 190, 0.203),
+            rgba(36, 20, 95, 0.128),
+            rgba(6, 3, 170, 0.06)
+        ) padding-box;
+
+    box-shadow:
+        0 0 30px rgba(78, 30, 190, 0.363),
+        inset 0 0 30px rgba(78, 30, 190, 0.04);
+
 }
 
 @keyframes borderMove {
@@ -580,39 +628,20 @@ body {
     }
 }
 
-.box1:hover{
-
-   margin-left: auto;
-   margin-right: auto;
-
-   margin-top: 25px;
-
-   height: 1390px;
-   width: 30%;
-
-    border: 10px solid transparent;
-    border-radius: 50px;
-
-    background:
-        linear-gradient(#070a31, #020227) padding-box,
-        linear-gradient(
-            90deg,
-            #2d59e9,
-            #24145f,
-            #0503aa,
-            #4e1ebe
-        ) border-box;
-
-    background-size: 100% 100%, 300% 100%;
-    animation: borderMove 2.5s linear infinite;
+.name{
+  	font-family: 'Orbitron', sans-serif;
+   text-align: center;
+   margin-top: 10px;
 }
 
-@keyframes borderMove {
-    0% {
-        background-position: 0 0, 0% 50%;
-    }
+.title{
+  	font-family: 'Orbitron', sans-serif;
+   text-align: center;
+   margin-top: -10px;
+}
 
-    100% {
-        background-position: 0 0, 300% 50%;
-    }
+.underline{
+   background: linear-gradient(to right, #ffffff00, #685aac91, #ffffff00);
+   width: 100%;
+   height: 2px;
 }
