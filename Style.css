@@ -972,7 +972,7 @@ body {
 .f1{
    background-color:#272727;
    height: 100%;
-   box-shadow: 0px 0px 20px rgb(0, 0, 0);
+
    flex: 0 0 33.333%;
    color: #606060;
    text-shadow: 0px 0px 10px rgb(0, 0, 0);
@@ -988,7 +988,7 @@ body {
 .f2{
    background-color:#272727;
    height: 100%;
-      box-shadow: 0px 0px 20px rgb(0, 0, 0);
+
    flex: 0 0 33.333%;
       color: #606060;
          text-shadow: 0px 0px 10px rgb(0, 0, 0);
@@ -1005,7 +1005,7 @@ body {
 .f3{
    background-color:#272727;
    height: 100%;
-   box-shadow: 0px 0px 20px rgb(0, 0, 0);
+
    flex: 0 0 33.333%;
       color: #606060;
          text-shadow: 0px 0px 10px rgb(0, 0, 0);
@@ -1093,4 +1093,43 @@ body {
    background-color: rgb(23, 23, 23);
    height: 100%;
    flex: 0 0 33.333%;
+}
+
+.sFooter{
+   background-color: #080808;
+
+   height: 400px;
+   width: 100%;
+
+   padding-top: 10px;
+
+   h1{
+      margin-top: -1px;
+      color: #ff776d;
+      font-size:75px;
+   }
+
+   img{
+      height: auto;
+      width: 200px;
+      filter: brightness(1);
+
+      transition: 0.1s ease;
+   }
+
+   img:hover{
+      height: auto;
+      width: 225px;
+            filter: brightness(1.1);
+   }
+
+   img:active{
+      height: auto;
+      width: 215px;
+
+                  filter: brightness(.5);
+      
+   }
+
+
 }
