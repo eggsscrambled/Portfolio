@@ -901,7 +901,7 @@ body {
    padding-bottom: 40px;
 }
 
-.sqrpics img{
+.sSlidshow{
    max-width: min(70%, 800px);
    max-height: 90%;
    width: auto;
@@ -912,7 +912,21 @@ body {
    transition: box-shadow 0.2s ease;
 }
 
-.sqrpics img:hover{
+.sDecoL{
+   height: auto;
+   width: 200px;
+
+   float:left;
+}
+
+.sDecoR{
+   height: auto;
+   width: 200px;
+
+   float: right;
+}
+
+.sSlidshow:hover{
    box-shadow: 0px 0px 10px rgb(207, 207, 207);
 }
 
@@ -960,8 +974,15 @@ body {
    height: 100%;
    box-shadow: 0px 0px 20px rgb(0, 0, 0);
    flex: 0 0 33.333%;
+   color: #606060;
+   text-shadow: 0px 0px 10px rgb(0, 0, 0);
+   img{
+       filter: brightness(.3);
 
-   transition: padding-top 0.3s ease;
+         transition: 0.3s ease;
+   }
+
+   transition: 0.3s ease;
 }
 
 .f2{
@@ -969,17 +990,33 @@ body {
    height: 100%;
       box-shadow: 0px 0px 20px rgb(0, 0, 0);
    flex: 0 0 33.333%;
+      color: #606060;
+         text-shadow: 0px 0px 10px rgb(0, 0, 0);
 
-   transition: padding-top 0.3s ease;
+            img{
+       filter: brightness(.3);
+
+         transition: 0.3s ease;
+   }
+
+   transition: 0.3s ease;
 }
 
 .f3{
    background-color:#272727;
    height: 100%;
-      box-shadow: 0px 0px 20px rgb(0, 0, 0);
+   box-shadow: 0px 0px 20px rgb(0, 0, 0);
    flex: 0 0 33.333%;
+      color: #606060;
+         text-shadow: 0px 0px 10px rgb(0, 0, 0);
 
-   transition: padding-top 0.3s ease;
+            img{
+       filter: brightness(.3);
+
+         transition: 0.3s ease;
+   }
+
+   transition: 0.3s ease;
 }
 
 
@@ -987,24 +1024,40 @@ body {
    background-color:#2b2b2b;
    height: 100%;
    flex: 0 0 33.333%;
+      color: #e0e0e0;
 
    padding-top: 3.5%;
+
+      img{
+       filter: brightness(1.2);
+   }
+
 }
 
 .f2:hover{
    background-color:#2b2b2b;
    height: 100%;
    flex: 0 0 33.333%;
+         color: #e0e0e0;
    
    padding-top: 3.5%;
+
+         img{
+       filter: brightness(1.2);
+   }
 }
 
 .f3:hover{
    background-color:#2b2b2b;
    height: 100%;
    flex: 0 0 33.333%;
+         color: #e0e0e0;
 
    padding-top: 3.5%;
+
+         img{
+       filter: brightness(1.2);
+   }
 }
 
 .sFoot{
