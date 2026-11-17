@@ -1013,3 +1013,31 @@ body {
    width: 100%;
    height: 800px;
 }
+
+.sCreds{
+   background-color: #1b0657;
+   width: 100%;
+   height: 450px;
+
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+
+.sCred1{
+   background-color: rgb(23, 23, 23);
+   height: 100%;
+   flex: 0 0 33.333%;
+}
+
+.sCred2{
+   background-color: rgb(23, 23, 23);
+   height: 100%;
+   flex: 0 0 33.333%;
+}
+
+.sCred3{
+   background-color: rgb(23, 23, 23);
+   height: 100%;
+   flex: 0 0 33.333%;
+}
