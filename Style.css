@@ -871,6 +871,7 @@ body {
 
    h4{
       margin-inline: 5vw;
+      font-size: 20px;
    }
 
    h2{
@@ -889,6 +890,7 @@ body {
 }
 
 .sqrpics{
+   position: relative;
    display: flex;
    align-items: center;
    justify-content: center;
@@ -908,26 +910,32 @@ body {
    height: auto;
    object-fit: contain;
    border-radius: 30px;
-   box-shadow: 0px 0px 20px rgb(91, 91, 92);
+   outline: #000000;
+   outline-width: 5px;
+   box-shadow: 0px 0px 20px rgb(0, 0, 0);
    transition: box-shadow 0.2s ease;
 }
 
 .sDecoL{
+   position: absolute;
+   top: 50%;
+   left: 5%;
    height: auto;
-   width: 200px;
-
-   float:left;
+   width: 15%;
+   transform: translateY(-50%);
 }
 
 .sDecoR{
+   position: absolute;
+   top: 50%;
+   right: 5%;
    height: auto;
-   width: 200px;
-
-   float: right;
+   width: 15%;
+   transform: translateY(-50%);
 }
 
 .sSlidshow:hover{
-   box-shadow: 0px 0px 10px rgb(207, 207, 207);
+   box-shadow: 0px 0px 10px rgb(0, 0, 0);
 }
 
 .sqrpicButton{
@@ -1096,15 +1104,18 @@ body {
 }
 
 .sFooter{
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   align-items: center;
+   box-sizing: border-box;
    background-color: #080808;
 
    height: 400px;
    width: 100%;
 
-   padding-top: 10px;
-
    h1{
-      margin-top: -1px;
+      margin: 0 0 24px;
       color: #ff776d;
       font-size:75px;
    }
