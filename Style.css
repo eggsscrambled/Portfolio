@@ -886,6 +886,8 @@ body {
    color: #cfcfcf;
    font-family: 'Courier New', Courier, monospace;
 
+      cursor: url("SquareCursor.png"), auto;
+
 
 }
 
@@ -901,17 +903,19 @@ body {
    box-sizing: border-box;
    padding-top: 40px;
    padding-bottom: 40px;
+
+      cursor: url("SquareCursor.png"), auto;
 }
 
 .sSlidshow{
    max-width: min(70%, 800px);
-   max-height: 90%;
-   width: auto;
+   height: auto;
+   width: 45%;
    height: auto;
    object-fit: contain;
-   border-radius: 30px;
-   outline: #000000;
-   outline-width: 5px;
+   margin-top: 75px;
+
+   outline-offset: 10px;
    box-shadow: 0px 0px 20px rgb(0, 0, 0);
    transition: box-shadow 0.2s ease;
 }
