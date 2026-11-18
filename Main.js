@@ -38,7 +38,14 @@ updateScrollReveal();
 const screenshotImage = document.getElementById("sqrpicImage");
 const previousScreenshotButton = document.getElementById("sqrpicPrevious");
 const nextScreenshotButton = document.getElementById("sqrpicNext");
-const screenshots = ["s1.png", "s2.png", "s3.png", "s4.png", "s5.png", "s6.png"];
+const screenshots = [
+    "SquareUp/s1.png",
+    "SquareUp/s2.png",
+    "SquareUp/s3.png",
+    "SquareUp/s4.png",
+    "SquareUp/s5.png",
+    "SquareUp/s6.png"
+];
 let currentScreenshot = 0;
 
 if (screenshotImage && previousScreenshotButton && nextScreenshotButton) {
@@ -54,5 +61,27 @@ if (screenshotImage && previousScreenshotButton && nextScreenshotButton) {
 
     nextScreenshotButton.addEventListener("click", () => {
         showScreenshot(currentScreenshot + 1);
+    });
+}
+
+const squareUpSection = document.querySelector(".squareup");
+const squareCursor = squareUpSection?.querySelector(".squareCursor");
+
+if (squareUpSection && squareCursor) {
+    squareUpSection.addEventListener("pointerenter", (event) => {
+        if (event.pointerType === "mouse") {
+            squareUpSection.classList.add("has-custom-cursor");
+        }
+    });
+
+    squareUpSection.addEventListener("pointermove", (event) => {
+        if (event.pointerType === "mouse") {
+            squareCursor.style.left = `${event.clientX}px`;
+            squareCursor.style.top = `${event.clientY}px`;
+        }
+    });
+
+    squareUpSection.addEventListener("pointerleave", () => {
+        squareUpSection.classList.remove("has-custom-cursor");
     });
 }

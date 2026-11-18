@@ -43,7 +43,7 @@
 
 
 
-   cursor: url("cursor.png"), auto;
+   cursor: url("Cursors/Cursor.png"), auto;
 
    transition: height 0.4s ease;
 
@@ -90,7 +90,7 @@
 
    
 
-   cursor: url("cursor.png"), auto;
+   cursor: url("Cursors/Cursor.png"), auto;
 }
 
 .meToward{
@@ -180,7 +180,7 @@ body {
    height: 2px;
    background-color: rgb(255, 255, 255);
    transition: background-color 0.25s ease;
-   cursor: url("cursor2.png"), auto;
+   cursor: url("Cursors/Cursor2.png"), auto;
 }
 
 .HardSkills{
@@ -204,7 +204,7 @@ body {
        text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.425);
    }
 
-      cursor: url("cursor2.png"), auto;
+      cursor: url("Cursors/Cursor2.png"), auto;
 
 
 }
@@ -484,7 +484,7 @@ body {
       radial-gradient(ellipse at 58% 10%, rgba(151, 42, 170, 0.18), transparent 36%),
       linear-gradient(135deg, #02020e, #050a1b 55%, #010106);
 
-    cursor: url("cursor2.png"), auto;
+    cursor: url("Cursors/Cursor2.png"), auto;
 }
 
 .panel1{
@@ -847,9 +847,43 @@ body {
 }
 
 .squareup{
+   --square-cursor-color: #5ea6ff;
+   --square-cursor-spin-duration: 6s;
    background-color: rgb(23, 23, 23);
    width: 100%;
    height: 3000px;
+}
+
+.squareup.has-custom-cursor,
+.squareup.has-custom-cursor *{
+   cursor: none;
+}
+
+.squareCursor{
+   position: fixed;
+   z-index: 9999;
+   left: 0;
+   top: 0;
+   width: 28px;
+   height: 30px;
+   background-color: var(--square-cursor-color);
+   -webkit-mask: url("Cursors/SquareCursorSmall.png") center / contain no-repeat;
+   mask: url("Cursors/SquareCursorSmall.png") center / contain no-repeat;
+   pointer-events: none;
+   opacity: 0;
+   transform: translate(-50%, -50%);
+   transform-origin: center;
+   animation: square-cursor-spin var(--square-cursor-spin-duration) linear infinite;
+}
+
+@keyframes square-cursor-spin{
+   to{
+      transform: translate(-50%, -50%) rotate(1turn);
+   }
+}
+
+.squareup.has-custom-cursor .squareCursor{
+   opacity: 1;
 }
 
 .speration2{
@@ -886,8 +920,6 @@ body {
    color: #cfcfcf;
    font-family: 'Courier New', Courier, monospace;
 
-      cursor: url("SquareCursor.png"), auto;
-
 
 }
 
@@ -904,7 +936,7 @@ body {
    padding-top: 40px;
    padding-bottom: 40px;
 
-      cursor: url("SquareCursor.png"), auto;
+      
 }
 
 .sSlidshow{
@@ -918,6 +950,8 @@ body {
    outline-offset: 10px;
    box-shadow: 0px 0px 20px rgb(0, 0, 0);
    transition: box-shadow 0.2s ease;
+
+   
 }
 
 .sDecoL{
@@ -947,7 +981,7 @@ body {
    width: 48px;
    height: 48px;
    border: 0;
-   background: transparent url("SquareTile.png") center / contain no-repeat;
+   background: transparent url("SquareUp/SquareTile.png") center / contain no-repeat;
    color: white;
    font-size: 28px;
    text-shadow: 0 1px 4px #000;
@@ -1147,4 +1181,11 @@ body {
    }
 
 
+}
+
+
+
+.BO{
+   width: 100%;
+   height: 2500px;
 }
