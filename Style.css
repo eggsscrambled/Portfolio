@@ -1039,7 +1039,7 @@ body {
       color: #606060;
          text-shadow: 0px 0px 10px rgb(0, 0, 0);
 
-            img{
+       img{
        filter: brightness(.3);
 
          transition: 0.3s ease;
@@ -1115,6 +1115,7 @@ body {
 
 .sCreds{
    background-color: #1b0657;
+
    width: 100%;
    height: 450px;
 
@@ -1142,12 +1143,15 @@ body {
 }
 
 .sFooter{
+   position: relative;
+   z-index: 1;
    display: flex;
    flex-direction: column;
    justify-content: center;
    align-items: center;
    box-sizing: border-box;
    background-color: #080808;
+   box-shadow: 0 0 32px 8px rgba(10, 10, 10, 0.938);
 
    height: 400px;
    width: 100%;
@@ -1176,10 +1180,9 @@ body {
       height: auto;
       width: 215px;
 
-                  filter: brightness(.5);
+      filter: brightness(.5);
       
    }
-
 
 }
 
@@ -1187,5 +1190,161 @@ body {
 
 .BO{
    width: 100%;
-   height: 2500px;
+   height: 3700px;
+   background-color: #000;
+   filter: brightness(0);
+   transition: filter 0.5s ease;
+   
+   box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+
+.BO:hover{
+   width: 100%;
+   height: 3700px;
+   background-color: #000;
+   filter: brightness(1.2);
+   
+   box-shadow: 0 0 5px rgb(0, 0, 0);
+}
+
+.BOMAIN{
+   background-color: #342c7c;
+   width: 100%;
+   height: 1500px;
+}
+
+.LeftNeg{
+   background-color: #000000;
+   width: 25%;
+   height: 100%;
+   float: left;
+}
+
+.BOTEXT{
+   background-color: #000000;
+   width: 50%;
+   height: 100%;
+   float: left;
+   font-family: 'Inter', sans-serif;
+
+
+}
+
+.BO1{
+   color: #929292;
+}
+
+.BO2{
+   color: #929292;
+}
+
+.BO3{
+   color: #707070;
+}
+
+.BO4{
+   color: #535353;
+}
+
+.BO5{
+   color: #494949;
+}
+
+.BO6{
+   color: #535353;
+}
+
+.BO7{
+   color: #222222;
+}
+
+.BO8{
+   color: #1b1b1b;
+}
+
+.boCodeViewport{
+   box-sizing: border-box;
+   max-height: 500px;
+   margin: 98px 12px 24px;
+   padding: 16px;
+   overflow: auto;
+   text-align: left;
+   background-color: #101010;
+   border: 1px solid #303030;
+   color: #bdbdbd;
+   font-family: Consolas, monospace;
+   font-size: 13px;
+   line-height: 1.5;
+}
+
+.boCodeViewport pre{
+   margin: 0;
+   text-align: left;
+   white-space: pre-wrap;
+   overflow-wrap: anywhere;
+}
+
+
+.RightNeg{
+   background-color: #000;
+   height: 100%;
+   width: 25%;
+   float: left;
+}
+
+.boScreenshot{
+   -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 85%);
+   mask-image: radial-gradient(ellipse at center, #000 30%, transparent 85%);
+}
+
+
+.boRatings{
+   margin: 50px 12px 24px;
+   color: #cc5945;
+   font-family: 'Inter', sans-serif;
+}
+
+.boRatingsLogo{
+   display: block;
+   width: min(100%, 360px);
+   height: auto;
+   margin: 0 auto 16px;
+}
+
+.boRatings h2{
+   margin: 0;
+   color: #d37528;
+   font-size: 42px;
+   text-align: center;
+}
+
+.boRatingsTotal{
+   margin: 4px 0 16px;
+   color: #72440f;
+   font-size: 20px;
+   text-align: center;
+}
+
+.boRatingTable{
+   width: 100%;
+   border-collapse: collapse;
+   font-size: 18px;
+   text-align: left;
+}
+
+.boRatingTable th,
+.boRatingTable td{
+   padding: 8px 10px;
+   border-bottom: 1px solid #39221b;
+}
+
+.boRatingTable th{
+   color: #d37528;
+   font-weight: 700;
+}
+
+.boRatingTable td:first-child,
+.boRatingTable td:last-child{
+   white-space: nowrap;
 }

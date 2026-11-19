@@ -423,7 +423,878 @@
                         </a>
 
                     </div>
+                   
+                   
+                
+                
+                    <div class = "BO">
 
+                        <img src = "BOP/BOBanner.png" class="BOBanner">
+
+                        <div class = "BOMAIN">
+
+                            <div class="LeftNeg">
+                                <img src="BOP/BOGenerator.png" style="height: auto; width: 80%; margin-top: 300px; filter: brightness(0.65);">
+
+                                <img src="BOP/EW.jpg" style="height: auto; width: 50%; margin-top: 1500px; filter: brightness(0.65);">
+
+                                 
+                            </div>
+
+                            <div class="BOTEXT">
+                                <h2 class = "BO1"> Game Jam Sucsess </h2>
+                                <h4 class = "BO2"> Blackout Protocol was developed in 72 hours for the game jam Ludum Dare 57
+                                    with the theme: "depths" There were 3262 groups of developers who competed and Blackout protocol 
+                                    placed 111th overall and 20th is the audio catagory; being featured on the front page
+                                </h4>
+
+                                <h2 class = "BO3"> Horror Design </h2>
+                                <h4 class = "BO4"> This project finds the player on a smill chain suspended repair lift being lowerd deep into 
+                                    dark caverns, tasked with reparing generators at incresingly deep layers of the caves. But be careful, you are not alone...
+                                </h4>
+
+                                <img src="BOP/BODEV.jpg" style="height: auto; width: 100%; filter: brightness(0.6);" class="boScreenshot">
+                                
+                                <h2 class = "BO5"> Monster Design </h2>
+                                <h4 class = "BO6"> Because this game was built in 72 hours the time crunch was a real challange, however the monster AI we came
+                                    up with during this event is something that to this day that demontstrates problem solving and was a quick and creative solution to our
+                                    favourite monster. The AI mixes a pre determined point patrol system, mixed with a player sight, detection and chase state machine. Alongside another script that
+                                    procedurally animates the mosteres legs, this script does the heavy lifting of just moving the monster around the cave and acting aware.
+                                </h4>
+
+                                <div class="boCodeViewport" tabindex="0" aria-label="Scrollable Monster AI source code">
+                                    <pre><code>using UnityEngine;
+using System.Collections.Generic;
+public enum MonsterState
+{
+    Searching,
+    Chasing,
+    ReturningToPatrol
+}
+
+public class MonsterAI : MonoBehaviour
+{
+    public MonsterState currentState;
+    public PatrolPoint[] patrolPoints; // Array of PatrolPoint objects (each one is a GameObject)
+    public float patrolSpeed = 2f; // Speed while patrolling
+    public float chaseSpeed = 4f; // Speed while chasing
+    public float returnToPatrolSpeed = 3f; // Speed while returning to patrol
+    public float rotationSpeed = 5f; // Speed at which the monster rotates to face direction
+    public GameObject torsoRef;
+
+    [Header(&quot;View Bobbing&quot;)]
+    public float bobRate = 2f; // How fast the monster bobs up and down
+    public float bobHeight = 0.2f; // How high the monster bobs
+    private float bobTimer = 0f; // Timer for the bobbing effect
+    private Vector3 originalPosition; // Original position to bob from
+    private bool isMoving = false; // Track if the monster is moving
+    private float currentBobOffset = 0f; // Current bobbing offset
+
+    [Header(&quot;Height Adjustment&quot;)]
+    public float heightAdjustSpeed = 2f; // Speed at which the monster adjusts height
+    public float height = 0f; // Target height adjustment
+    private float currentGroundHeight = 0f; // Current ground height below the monster
+
+    [Header(&quot;Vision System&quot;)]
+    public Transform headPosition; // The &quot;head&quot; GameObject for ray origin
+
+    [Tooltip(&quot;How far the monster can detect obstacles&quot;)]
+    public float obstacleDetectionRange = 5f; // Shorter range for obstacle detection
+
+    [Tooltip(&quot;How far the monster can see the player&quot;)]
+    public float playerDetectionRange = 15f; // Longer range for player detection
+    public float fieldOfView = 80f; // The monster&#39;s field of view angle
+    public int rayCount = 6; // Number of rays to cast
+    public LayerMask visionObstacleMask; // Layers considered as obstacles for vision
+    public LayerMask playerMask; // Layer mask for detecting the player
+    public Color rayHitColor = Color.red; // Color for rays that hit obstacles
+    public Color rayClearColor = Color.green; // Color for rays that don&#39;t hit obstacles
+    public Color rayPlayerColor = Color.yellow; // Color for the ray that hits the player
+
+    [Header(&quot;Depth Probe&quot;)]
+    public float depthProbeLength = 1f; // Length of the depth probe ray
+    public Color depthProbeColor = Color.magenta; // Color for the depth probe ray
+    private bool depthProbeHit = false; // Track if the depth probe hit something
+
+    [Header(&quot;Obstacle Avoidance&quot;)]
+    public float backupDistance = 1.5f; // How far to back up when stuck
+    public float backupSpeed = 2.0f; // Speed at which to back up
+    public float stuckTime = 0.5f; // Time before considering monster is stuck
+    public float extraRotationSpeed = 10f; // Extra rotation speed when avoiding obstacles
+    private float timeStuck = 0f; // How long the monster has been stuck
+    private bool isBackingUp = false; // Whether the monster is currently backing up
+    private float backupTimer = 0f; // Timer for backup maneuver
+    private float backupDuration = 0.75f; // How long to back up for
+    private Vector3 backupDirection; // Direction to back up in
+
+    [Header(&quot;Path Tracking&quot;)]
+    public float pathNodeDistance = 1f; // Distance between path nodes
+    public int maxPathNodes = 100; // Maximum number of path nodes to store
+    public Color pathColor = Color.blue; // Color for the path visualization
+    private List&lt;Vector3&gt; pathNodes = new List&lt;Vector3&gt;(); // Track the monster&#39;s path
+    private int currentReturnPathIndex = 0; // Index for returning along the path
+    private Vector3 lastPathNodePosition; // Last recorded path position
+
+    [Header(&quot;Lost Player Behavior&quot;)]
+    public float lostPlayerTime = 5f; // Time the monster will keep chasing after losing sight of the player
+    private float timeSincePlayerLost = 0f; // Time elapsed since the player was last seen
+    private Vector3 lastKnownPlayerPosition; // The last position of the player when they were seen
+    private bool playerLost = false; // Flag to check if the player was lost
+    private bool playerWasVisible = false; // Track if the player was previously visible
+    private int currentPatrolIndex = 0;
+    private Transform player; // Reference to the player object
+    private bool[] rayHits; // Track which peripheral rays hit obstacles
+    private bool canSeePlayer = false; // Track if the monster can see the player
+    private Vector3 lastPosition; // Previous position to detect if stuck
+
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag(&quot;Player&quot;).transform;
+        SwitchState(MonsterState.Searching);  // Start in the searching state
+        originalPosition = transform.position;
+        currentGroundHeight = GetGroundHeight();
+        lastPosition = transform.position;
+        // Make sure we have a head position
+        if (headPosition == null)
+        {
+            Debug.LogWarning(&quot;No head position assigned. Using main transform as fallback.&quot;);
+            headPosition = transform;
+        }
+        // Initialize ray hits array based on ray count
+        rayHits = new bool[rayCount];
+        // Initialize path tracking
+        lastPathNodePosition = transform.position;
+        pathNodes.Add(transform.position);
+    }
+
+    private void Update()
+    {
+        // Reset movement flag
+        isMoving = false;
+        // Check vision - now separated into obstacle detection and player detection
+        CheckVision();
+        // Determine state based on vision
+        if (canSeePlayer &amp;&amp; currentState != MonsterState.Chasing)
+        {
+            SwitchState(MonsterState.Chasing);
+        }
+        // Check if we&#39;re stuck (depth probe hit and not moving)
+        CheckIfStuck();
+        // If we&#39;re backing up, handle that first
+        if (isBackingUp)
+        {
+            HandleBackup();
+        }
+        else
+        {
+            // Handle current state
+            switch (currentState)
+            {
+                case MonsterState.Searching:
+                    Patrol();
+                    break;
+                case MonsterState.Chasing:
+                    ChasePlayer();
+                    // Record path while chasing
+                    RecordPath();
+                    break;
+                case MonsterState.ReturningToPatrol:
+                    ReturnToPatrol();
+                    break;
+            }
+        }
+        // Apply combined height adjustment and bobbing
+        CombinedHeightAndBobbing();
+        // Update last position for stuck detection
+        lastPosition = transform.position;
+    }
+
+    private void CheckIfStuck()
+    {
+        // Check if depth probe is hitting something and we&#39;re not moving
+        if (depthProbeHit &amp;&amp; Vector3.Distance(transform.position, lastPosition) &lt; 0.01f)
+        {
+            timeStuck += Time.deltaTime;
+            // If we&#39;ve been stuck for long enough, start backing up
+            if (timeStuck &gt; stuckTime &amp;&amp; !isBackingUp)
+            {
+                StartBackup();
+            }
+        }
+        else
+        {
+            // Reset stuck timer if we&#39;re moving or depth probe is not hitting
+            timeStuck = 0f;
+        }
+    }
+
+    private void StartBackup()
+    {
+        isBackingUp = true;
+        backupTimer = 0f;
+        // Determine backup direction - opposite to forward direction
+        backupDirection = -transform.forward;
+        // Add some random variation to avoid getting stuck in loops
+        backupDirection += new Vector3(Random.Range(-0.3f, 0.3f), 0, Random.Range(-0.3f, 0.3f));
+        backupDirection.Normalize();
+    }
+
+    private void HandleBackup()
+    {
+        backupTimer += Time.deltaTime;
+        // Move backwards
+        transform.position += backupDirection * backupSpeed * Time.deltaTime;
+        isMoving = true;
+        // Calculate rotation direction based on current state
+        Vector3 targetPosition;
+        if (currentState == MonsterState.Chasing)
+        {
+            // If chasing, rotate toward player
+            targetPosition = canSeePlayer ? player.position : lastKnownPlayerPosition;
+        }
+        else if (currentState == MonsterState.ReturningToPatrol &amp;&amp; pathNodes.Count &gt; 0)
+        {
+            // If returning to patrol, rotate toward path node
+            targetPosition = pathNodes[Mathf.Max(0, currentReturnPathIndex)];
+        }
+        else
+        {
+            // If patrolling, rotate toward patrol point
+            targetPosition = patrolPoints[currentPatrolIndex].adjustedPosition;
+        }
+        // Calculate direction to target (only on horizontal plane)
+        Vector3 direction = targetPosition - transform.position;
+        direction.y = 0;
+        if (direction != Vector3.zero)
+        {
+            // Rotate with increased speed while backing up
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,
+                                                  (rotationSpeed + extraRotationSpeed) * Time.deltaTime);
+        }
+        // Stop backing up after duration expires
+        if (backupTimer &gt;= backupDuration)
+        {
+            isBackingUp = false;
+            timeStuck = 0f;
+        }
+    }
+
+    private float GetGroundHeight()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(torsoRef.transform.position, Vector3.down, out hit, Mathf.Infinity))
+        {
+            return hit.point.y;
+        }
+        return 0f;
+    }
+
+    private void CombinedHeightAndBobbing()
+    {
+        // Update current ground height
+        currentGroundHeight = GetGroundHeight();
+        // Update bob timer and calculate bobbing offset only if moving
+        if (isMoving)
+        {
+            bobTimer += Time.deltaTime * bobRate;
+            currentBobOffset = Mathf.Sin(bobTimer) * bobHeight;
+        }
+        else
+        {
+            // Gradually reduce bobbing when not moving
+            currentBobOffset = Mathf.Lerp(currentBobOffset, 0f, Time.deltaTime * 5f);
+            bobTimer = 0f;
+        }
+        // Calculate the desired Y position: ground height + desired height offset + bobbing
+        float targetYPosition = currentGroundHeight + height + currentBobOffset;
+        // Smoothly adjust the Y position
+        transform.position = new Vector3(
+            transform.position.x,
+             Mathf.Lerp(transform.position.y, targetYPosition, Time.deltaTime * heightAdjustSpeed),
+             transform.position.z
+        );
+        // Update original position X and Z but not Y (used as reference)
+        originalPosition.x = transform.position.x;
+        originalPosition.z = transform.position.z;
+    }
+
+    private void CheckVision()
+    {
+        // Reset vision status
+        canSeePlayer = false;
+        depthProbeHit = false;
+        // Calculate ray directions within FOV for obstacle detection
+        Vector3[] rayDirections = new Vector3[rayCount];
+        // Calculate the half FOV to distribute rays
+        float halfFOV = fieldOfView / 2f;
+        // Calculate the step between each ray
+        float angleStep = fieldOfView / (rayCount - 1);
+        // For even distribution, start from -halfFOV to +halfFOV
+        for (int i = 0; i &lt; rayCount; i++)
+        {
+            // Calculate the angle for this ray, centered around head&#39;s forward direction
+            float angle = -halfFOV + (i * angleStep);
+            // Create ray direction by rotating around the head&#39;s up axis
+            rayDirections[i] = Quaternion.AngleAxis(angle, headPosition.up) * headPosition.forward;
+            rayHits[i] = false;
+        }
+        // Cast the peripheral vision rays for OBSTACLE DETECTION (shorter range)
+        for (int i = 0; i &lt; rayCount; i++)
+        {
+            RaycastHit hit;
+            if (Physics.Raycast(headPosition.position, rayDirections[i], out hit, obstacleDetectionRange, visionObstacleMask))
+            {
+                rayHits[i] = true;
+            }
+        }
+        // Cast the depth probe ray (very short, directly forward)
+        RaycastHit depthHit;
+        if (Physics.Raycast(headPosition.position, headPosition.forward, out depthHit, depthProbeLength, visionObstacleMask))
+        {
+            depthProbeHit = true;
+        }
+        // Check if player is within FOV using a SEPARATE ray with LONGER range
+        Vector3 directionToPlayer = (player.position - headPosition.position).normalized;
+        float angleToPlayer = Vector3.Angle(headPosition.forward, directionToPlayer);
+        // Only check for the player if they&#39;re within the FOV
+        if (angleToPlayer &lt;= halfFOV)
+        {
+            RaycastHit playerHit;
+            // Use a longer ray for player detection
+            if (Physics.Raycast(headPosition.position, directionToPlayer, out playerHit, playerDetectionRange))
+            {
+                // If the ray hit the player
+                if (playerHit.collider.gameObject == player.gameObject ||
+                     ((1 &lt;&lt; playerHit.collider.gameObject.layer) &amp; playerMask) != 0)
+                {
+                    canSeePlayer = true;
+                    playerWasVisible = true;
+                    lastKnownPlayerPosition = player.position; // Store last known position
+                }
+            }
+        }
+        // If player is no longer visible, initiate lost player behavior
+        if (!canSeePlayer &amp;&amp; playerWasVisible &amp;&amp; currentState == MonsterState.Chasing)
+        {
+            timeSincePlayerLost += Time.deltaTime;
+            if (timeSincePlayerLost &gt;= lostPlayerTime)
+            {
+                SwitchState(MonsterState.ReturningToPatrol); // Start returning
+                currentReturnPathIndex = pathNodes.Count - 1; // Start from the last path node
+            }
+        }
+        else if (canSeePlayer)
+        {
+            timeSincePlayerLost = 0f; // Reset the lost time counter if we see the player again
+        }
+    }
+
+    private void SwitchState(MonsterState newState)
+    {
+        // Handle state exit actions
+        if (currentState == MonsterState.Chasing &amp;&amp; newState == MonsterState.ReturningToPatrol)
+        {
+            // Make sure we have a valid path to return on
+            if (pathNodes.Count == 0)
+            {
+                // If we somehow have no path, just go back to searching
+                newState = MonsterState.Searching;
+            }
+        }
+        currentState = newState;
+        // Handle state enter actions
+        if (newState == MonsterState.Searching)
+        {
+            // Clear the path when returning to patrol state
+            pathNodes.Clear();
+            pathNodes.Add(transform.position);
+            lastPathNodePosition = transform.position;
+            playerWasVisible = false;
+        }
+    }
+
+    private void Patrol()
+    {
+        // Move to the current patrol point
+        PatrolPoint targetPatrolPoint = patrolPoints[currentPatrolIndex];
+        Vector3 targetPosition = targetPatrolPoint.adjustedPosition; // Use adjusted position (between roof and floor)
+                                                                     // Move the monster toward the patrol point
+        MoveToTarget(targetPosition, patrolSpeed);
+        // If depth probe is hit OR we reached the patrol point, move to the next patrol point
+        if ((depthProbeHit &amp;&amp; timeStuck &gt; stuckTime) || Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
+                 new Vector2(targetPosition.x, targetPosition.z)) &lt; 0.5f)
+        {
+            // Move to the next patrol point
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+        }
+    }
+
+    private void RecordPath()
+    {
+        // Check if we&#39;ve moved far enough to record a new path node
+        if (Vector3.Distance(transform.position, lastPathNodePosition) &gt;= pathNodeDistance)
+        {
+            // Add the current position to the path
+            pathNodes.Add(transform.position);
+            lastPathNodePosition = transform.position;
+            // Limit the number of path nodes
+            if (pathNodes.Count &gt; maxPathNodes)
+            {
+                pathNodes.RemoveAt(0);
+            }
+        }
+    }
+
+    private void ReturnToPatrol()
+    {
+        // Check if we have any path nodes left
+        if (pathNodes.Count == 0 || currentReturnPathIndex &lt; 0)
+        {
+            SwitchState(MonsterState.Searching);
+            return;
+        }
+        // Get the target path node
+        Vector3 targetPosition = pathNodes[currentReturnPathIndex];
+        // Move towards the target node
+        MoveToTarget(targetPosition, returnToPatrolSpeed);
+        // Check if we&#39;ve reached the current path node
+        if (Vector3.Distance(new Vector3(transform.position.x, 0, transform.position.z),
+                             new Vector3(targetPosition.x, 0, targetPosition.z)) &lt; 0.5f)
+        {
+            // Move to the previous path node
+            currentReturnPathIndex--;
+            // If we&#39;ve reached the start of the path, go back to patrolling
+            if (currentReturnPathIndex &lt; 0)
+            {
+                SwitchState(MonsterState.Searching);
+            }
+        }
+    }
+
+    private void MoveToTarget(Vector3 targetPosition, float speed)
+    {
+        // Calculate direction to the target
+        Vector3 direction = (targetPosition - transform.position).normalized;
+        // Rotate to face the target
+        RotateTowards(targetPosition);
+        // Check if depth probe hit an obstacle and we&#39;ve been stuck for a while
+        if (depthProbeHit &amp;&amp; timeStuck &gt; stuckTime)
+        {
+            // If stuck, we&#39;ll handle movement in the backup system
+            return;
+        }
+        // Move forward only if not all obstacle rays are hitting
+        bool allRaysHitting = true;
+        for (int i = 0; i &lt; rayHits.Length; i++)
+        {
+            if (!rayHits[i])
+            {
+                allRaysHitting = false;
+                break;
+            }
+        }
+        // If all rays are hitting, move at reduced speed unless depth probe also hits
+        float adjustedSpeed = allRaysHitting ? speed * 0.3f : speed;
+        // If depth probe is hit but we haven&#39;t been stuck long enough, move at very reduced speed
+        if (depthProbeHit)
+        {
+            adjustedSpeed *= 0.2f;
+        }
+        // Move forward
+        transform.Translate(direction * adjustedSpeed * Time.deltaTime, Space.World);
+        // Set moving flag
+        isMoving = true;
+    }
+
+    public void RotateTowards(Vector3 targetPosition)
+    {
+        // Get the direction to look at (only on the horizontal plane)
+        Vector3 direction = targetPosition - transform.position;
+        direction.y = 0; // Keep rotation only on the Y axis (horizontal plane)
+                         // Only rotate if we have a direction to rotate towards
+        if (direction != Vector3.zero)
+        {
+            // Create the target rotation
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            // Smoothly rotate towards the target
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        }
+    }
+
+    private void ChasePlayer()
+    {
+        // If depth probe is hit while chasing and we&#39;ve been stuck, the backup system will handle movement
+        if (depthProbeHit &amp;&amp; timeStuck &gt; stuckTime)
+        {
+            // Still rotate to face player
+            RotateTowards(player.position);
+            return;
+        }
+        // Count how many rays are hitting obstacles
+        int hitCount = 0;
+        for (int i = 0; i &lt; rayHits.Length; i++)
+        {
+            if (rayHits[i]) hitCount++;
+        }
+        // If most rays are hitting obstacles or we can&#39;t see the player anymore, handle lost player logic
+        if (!canSeePlayer)
+        {
+            if (!playerLost)
+            {
+                playerLost = true;
+                timeSincePlayerLost = 0f; // Start the timer when we lose sight of the player
+            }
+            // Use raycasting to safely navigate in the last known direction
+            NavigateToLastKnownPosition();
+            // If enough time has passed, this will be handled in CheckVision
+        }
+        else
+        {
+            // Reset the lost flag if the player is visible again
+            if (playerLost)
+            {
+                timeSincePlayerLost = 0f; // Reset the timer as we are chasing the player again
+                playerLost = false;
+            }
+            // If we have obstacle detections, use smarter pathfinding
+            if (hitCount &gt; 0)
+            {
+                // Find the clearest direction
+                Vector3 clearDirection = FindClearestDirection();
+                if (clearDirection != Vector3.zero)
+                {
+                    // Create a target position in the clear direction that also leads toward the player
+                    Vector3 dirToPlayer = (player.position - transform.position).normalized;
+                    Vector3 combinedDirection = (clearDirection + dirToPlayer).normalized;
+                    Vector3 avoidancePosition = transform.position + combinedDirection * 5f;
+                    // Move in that direction
+                    MoveToTarget(avoidancePosition, chaseSpeed);
+                }
+                else
+                {
+                    // If no clear direction is found, try to navigate around obstacles
+                    AttemptObstacleNavigation();
+                }
+            }
+            else
+            {
+                // No obstacles, chase directly toward the player
+                MoveToTarget(player.position, chaseSpeed);
+            }
+            // Smoothly rotate towards the player
+            RotateTowards(player.position);
+        }
+        // Update the lost player timer
+        if (playerLost)
+        {
+            timeSincePlayerLost += Time.deltaTime;
+        }
+        else
+        {
+            // Reset the time counter when we&#39;re actively chasing the player
+            timeSincePlayerLost = 0f;
+        }
+    }
+    // Find the clearest direction based on obstacle detection rays
+
+    private Vector3 FindClearestDirection()
+    {
+        // Find the longest sequence of non-hit rays
+        int bestStartIndex = 0;
+        int bestLength = 0;
+        int currentLength = 0;
+        int currentStartIndex = 0;
+        // Scan through the ray hits twice to handle wrapping around
+        for (int i = 0; i &lt; rayHits.Length * 2; i++)
+        {
+            int index = i % rayHits.Length;
+            if (!rayHits[index])
+            {
+                // If this is the start of a new clear sequence
+                if (currentLength == 0)
+                {
+                    currentStartIndex = index;
+                }
+                currentLength++;
+            }
+            else
+            {
+                // End of a clear sequence
+                if (currentLength &gt; bestLength)
+                {
+                    bestLength = currentLength;
+                    bestStartIndex = currentStartIndex;
+                }
+                currentLength = 0;
+            }
+        }
+        // Check if the last sequence is better
+        if (currentLength &gt; bestLength)
+        {
+            bestLength = currentLength;
+            bestStartIndex = currentStartIndex;
+        }
+        // If we found a clear direction, use it
+        if (bestLength &gt; 0)
+        {
+            // Calculate the middle index of the clear sequence
+            int middleIndex = (bestStartIndex + bestLength / 2) % rayHits.Length;
+            // Calculate the angle within our FOV
+            float halfFOV = fieldOfView / 2f;
+            float angleStep = fieldOfView / (rayCount - 1);
+            float angle = -halfFOV + (middleIndex * angleStep);
+            // Create the direction vector
+            return Quaternion.AngleAxis(angle, headPosition.up) * headPosition.forward;
+        }
+        return Vector3.zero;
+    }
+    // Try to navigate around obstacles when we can still see the player
+
+    private void AttemptObstacleNavigation()
+    {
+        // Try to find any viable direction to move
+        // Look for rays with longer distances to obstacles
+        float longestDistance = 0f;
+        int bestRayIndex = -1;
+        for (int i = 0; i &lt; rayCount; i++)
+        {
+            RaycastHit hit;
+            float halfFOV = fieldOfView / 2f;
+            float angleStep = fieldOfView / (rayCount - 1);
+            float angle = -halfFOV + (i * angleStep);
+            Vector3 rayDir = Quaternion.AngleAxis(angle, headPosition.up) * headPosition.forward;
+            if (Physics.Raycast(headPosition.position, rayDir, out hit, obstacleDetectionRange, visionObstacleMask))
+            {
+                if (hit.distance &gt; longestDistance)
+                {
+                    longestDistance = hit.distance;
+                    bestRayIndex = i;
+                }
+            }
+            else
+            {
+                // Found a completely clear ray
+                bestRayIndex = i;
+                break;
+            }
+        }
+        if (bestRayIndex &gt;= 0)
+        {
+            // Calculate the direction to move based on the best ray
+            float halfFOV = fieldOfView / 2f;
+            float angleStep = fieldOfView / (rayCount - 1);
+            float angle = -halfFOV + (bestRayIndex * angleStep);
+            Vector3 bestDirection = Quaternion.AngleAxis(angle, headPosition.up) * headPosition.forward;
+            // Move in that direction
+            Vector3 targetPos = transform.position + bestDirection * 3f;
+            MoveToTarget(targetPos, chaseSpeed);
+        }
+        else
+        {
+            // As a last resort, try to move toward the player
+            // but at a reduced speed to avoid getting stuck
+            MoveToTarget(player.position, chaseSpeed * 0.5f);
+        }
+    }
+    // Navigate toward the last known player position
+
+    private void NavigateToLastKnownPosition()
+    {
+        // Find a clear path toward the last known position
+        Vector3 directionToTarget = (lastKnownPlayerPosition - transform.position).normalized;
+        // Check if we&#39;re close enough to the last known position to give up
+        if (Vector3.Distance(transform.position, lastKnownPlayerPosition) &lt; 1.5f)
+        {
+            // We&#39;ve reached the last known position but couldn&#39;t find the player
+            // Consider a basic search pattern around this area
+            Vector3 searchPoint = lastKnownPlayerPosition +
+                 new Vector3(Mathf.Cos(Time.time) * 5f, 0, Mathf.Sin(Time.time) * 5f);
+            MoveToTarget(searchPoint, patrolSpeed);
+            return;
+        }
+        // Use FindClearestDirection to navigate toward the last known position
+        Vector3 clearDirection = FindClearestDirection();
+        if (clearDirection != Vector3.zero)
+        {
+            // Blend clear direction with direction to last known position
+            Vector3 combinedDirection = (clearDirection + directionToTarget).normalized;
+            Vector3 targetPos = transform.position + combinedDirection * 3f;
+            MoveToTarget(targetPos, chaseSpeed * 0.8f);
+        }
+        else
+        {
+            // If completely blocked, try to move carefully toward the last known position
+            MoveToTarget(lastKnownPlayerPosition, patrolSpeed);
+        }
+        // Rotate towards the last known position
+        RotateTowards(lastKnownPlayerPosition);
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Only show vision rays if we have a head position
+        if (headPosition == null) return;
+        // Draw height target indicator
+        if (torsoRef != null)
+        {
+            Gizmos.color = Color.magenta;
+            Vector3 targetPosition = torsoRef.transform.position + Vector3.down * height;
+            Gizmos.DrawLine(torsoRef.transform.position, targetPosition);
+            Gizmos.DrawSphere(targetPosition, 0.1f);
+        }
+        // Draw the path
+        if (Application.isPlaying &amp;&amp; pathNodes.Count &gt; 1)
+        {
+            Gizmos.color = pathColor;
+            // Draw the path lines
+            for (int i = 0; i &lt; pathNodes.Count - 1; i++)
+            {
+                Gizmos.DrawLine(pathNodes[i], pathNodes[i + 1]);
+            }
+            // Draw nodes
+            for (int i = 0; i &lt; pathNodes.Count; i++)
+            {
+                // Make the current return target node larger
+                if (currentState == MonsterState.ReturningToPatrol &amp;&amp; i == currentReturnPathIndex)
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawSphere(pathNodes[i], 0.2f);
+                    Gizmos.color = pathColor;
+                }
+                else
+                {
+                    Gizmos.DrawSphere(pathNodes[i], 0.1f);
+                }
+            }
+        }
+        // Do we have player and rayHits initialized? (For edit mode visualization)
+        bool isInitialized = Application.isPlaying &amp;&amp; player != null &amp;&amp; rayHits != null;
+        // Calculate ray directions for visualization
+        int visualRayCount = isInitialized ? rayCount : 6; // Default in edit mode
+        Vector3[] rayDirections = new Vector3[visualRayCount];
+        // Calculate the half FOV
+        float halfFOV = fieldOfView / 2f;
+        float angleStep = fieldOfView / (visualRayCount - 1);
+        // Draw the FOV visualization
+        Gizmos.color = Color.blue;
+        Vector3 leftRayDir = Quaternion.AngleAxis(-halfFOV, headPosition.up) * headPosition.forward;
+        Vector3 rightRayDir = Quaternion.AngleAxis(halfFOV, headPosition.up) * headPosition.forward;
+        // Draw two FOV areas - one for obstacle detection (shorter) and one for player detection (longer)
+        // Obstacle detection FOV
+        Gizmos.DrawLine(headPosition.position, headPosition.position + leftRayDir * obstacleDetectionRange);
+        Gizmos.DrawLine(headPosition.position, headPosition.position + rightRayDir * obstacleDetectionRange);
+        // Player detection FOV (using dashed line representation)
+        Gizmos.color = new Color(0, 0, 1, 0.5f); // Semi-transparent blue
+        DrawDashedLine(headPosition.position + leftRayDir * obstacleDetectionRange,
+                        headPosition.position + leftRayDir * playerDetectionRange, 5);
+        DrawDashedLine(headPosition.position + rightRayDir * obstacleDetectionRange,
+                        headPosition.position + rightRayDir * playerDetectionRange, 5);
+        // Draw the peripheral vision rays for obstacle detection
+        for (int i = 0; i &lt; visualRayCount; i++)
+        {
+            // Calculate the angle for this ray, centered around head&#39;s forward direction
+            float angle = -halfFOV + (i * angleStep);
+            // Create ray direction by rotating around the head&#39;s up axis
+            rayDirections[i] = Quaternion.AngleAxis(angle, headPosition.up) * headPosition.forward;
+            // Set color based on ray hit status if initialized
+            if (isInitialized)
+            {
+                Gizmos.color = rayHits[i] ? rayHitColor : rayClearColor;
+            }
+            else
+            {
+                // In edit mode, just use the clear color
+                Gizmos.color = rayClearColor;
+            }
+            // Draw the ray for obstacle detection
+            Gizmos.DrawLine(headPosition.position, headPosition.position + rayDirections[i] * obstacleDetectionRange);
+            Gizmos.DrawSphere(headPosition.position + rayDirections[i] * obstacleDetectionRange, 0.1f);
+        }
+        // Draw the depth probe ray
+        Gizmos.color = depthProbeColor;
+        Vector3 depthProbeEnd = headPosition.position + headPosition.forward * depthProbeLength;
+        Gizmos.DrawLine(headPosition.position, depthProbeEnd);
+        // Change color if the depth probe hits something
+        if (Application.isPlaying &amp;&amp; depthProbeHit)
+        {
+            Gizmos.color = Color.red;
+        }
+        Gizmos.DrawSphere(depthProbeEnd, 0.15f);
+        // Draw the ray to the player if initialized
+        if (isInitialized &amp;&amp; player != null)
+        {
+            Vector3 directionToPlayer = (player.position - headPosition.position).normalized;
+            float angleToPlayer = Vector3.Angle(headPosition.forward, directionToPlayer);
+            // Only draw if within FOV
+            if (angleToPlayer &lt;= halfFOV)
+            {
+                Gizmos.color = canSeePlayer ? rayPlayerColor : rayHitColor;
+                Gizmos.DrawLine(headPosition.position, headPosition.position + directionToPlayer * playerDetectionRange);
+                Gizmos.DrawSphere(headPosition.position + directionToPlayer * playerDetectionRange, 0.15f);
+            }
+        }
+    }
+    // Helper method to draw dashed lines in the editor
+
+    private void DrawDashedLine(Vector3 start, Vector3 end, int dashCount)
+    {
+        Vector3 direction = (end - start);
+        float dashLength = direction.magnitude / (dashCount * 2);
+        for (int i = 0; i &lt; dashCount; i++)
+        {
+            Vector3 dashStart = start + direction.normalized * (i * dashLength * 2);
+            Vector3 dashEnd = dashStart + direction.normalized * dashLength;
+            Gizmos.DrawLine(dashStart, dashEnd);
+        }
+    }
+}</code></pre>
+                                </div>
+
+                                <br>
+                                <br>
+                                <h2 class = "BO7"> Feedback </h2>
+                                <h4 class = "BO8"> The most valuble part of the game jam experience is getting to hear what others have to say about your project;
+                                    unique views and commpliments and critisims are very important in my opinion. We were lucky enough to have some esteemed game developers
+                                    take their time to play and leave their thoughts on our project!
+                                </h4>
+
+                                <section class="boRatings" aria-labelledby="boRatingsTitle">
+                                    <img class="boRatingsLogo" src="BOP/LDLOGO.png" alt="Ludum Dare 57">
+                                    <h2 id="boRatingsTitle">Ratings</h2>
+                                    <p class="boRatingsTotal">Out of 3,262 games</p>
+                                    <table class="boRatingTable">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Place</th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">Rating</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>111th</td><td>Overall</td><td>4.017 / 5</td></tr>
+                                            <tr><td>252nd</td><td>Fun</td><td>3.65 / 5</td></tr>
+                                            <tr><td>244th</td><td>Innovation</td><td>3.586 / 5</td></tr>
+                                            <tr><td>23rd</td><td>Theme</td><td>4.417 / 5</td></tr>
+                                            <tr><td>74th</td><td>Graphics</td><td>4.45 / 5</td></tr>
+                                            <tr><td>20th</td><td>Audio</td><td>4.3 / 5</td></tr>
+                                            <tr><td>31st</td><td>Mood</td><td>4.35 / 5</td></tr>
+                                        </tbody>
+                                    </table>
+                                </section>
+                            </div>
+                        
+                            <div class="RightNeg">
+                                <img src="BOP/For.png" class="boScreenshot" style="height: auto; width: 70%; margin-top: 1200px; filter: brightness(0.65);">
+                                <img src="BOP/Lift.png" class="boScreenshot" style="height: auto; width: 70%; margin-top: 1400px; filter: brightness(0.65);">
+
+
+                            </div>
+
+
+                        </div>
+            
+                    </div>
 
 
                     
@@ -434,10 +1305,7 @@
         </div>
         
 
-        <div class = "BO">
 
-            
-        </div>
 
 
 
