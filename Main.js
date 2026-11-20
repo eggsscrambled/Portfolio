@@ -68,14 +68,17 @@ const squareUpSection = document.querySelector(".squareup");
 const squareCursor = squareUpSection?.querySelector(".squareCursor");
 
 if (squareUpSection && squareCursor) {
-    squareUpSection.addEventListener("pointerenter", (event) => {
-        if (event.pointerType === "mouse") {
-            squareUpSection.classList.add("has-custom-cursor");
-        }
-    });
-
     squareUpSection.addEventListener("pointermove", (event) => {
         if (event.pointerType === "mouse") {
+            const isOverBlackoutProtocol =
+                event.target instanceof Element && event.target.closest(".BO");
+
+            if (isOverBlackoutProtocol) {
+                squareUpSection.classList.remove("has-custom-cursor");
+                return;
+            }
+
+            squareUpSection.classList.add("has-custom-cursor");
             squareCursor.style.left = `${event.clientX}px`;
             squareCursor.style.top = `${event.clientY}px`;
         }

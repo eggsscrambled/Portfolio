@@ -1208,6 +1208,11 @@ body {
    box-shadow: 0 0 5px rgb(0, 0, 0);
 }
 
+.BO,
+.BO *{
+   cursor: default;
+}
+
 .BOMAIN{
    background-color: #342c7c;
    width: 100%;
