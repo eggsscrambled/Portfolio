@@ -1015,6 +1015,16 @@ body {
    height: 800px;
 }
 
+.sFeatures > div{
+   box-sizing: border-box;
+   min-width: 0;
+}
+
+.sFeatures h2,
+.sFeatures h3{
+   overflow-wrap: anywhere;
+}
+
 .f1{
    background-color:#272727;
    height: 100%;
@@ -1352,4 +1362,398 @@ body {
 .boRatingTable td:first-child,
 .boRatingTable td:last-child{
    white-space: nowrap;
+}
+
+img,
+video{
+   max-width: 100%;
+   height: auto;
+}
+
+.boCodeViewport{
+   min-width: 0;
+   max-width: 100%;
+}
+
+.boCodeViewport pre code{
+   display: block;
+   max-width: 100%;
+   white-space: pre-wrap;
+   overflow-wrap: anywhere;
+}
+
+@media (max-width: 1100px){
+   img,
+   video{
+      max-width: 100%;
+      height: auto;
+   }
+
+   .Intro,
+   .Intro:hover{
+      box-sizing: border-box;
+      width: 100%;
+      height: auto;
+      min-height: 100svh;
+      padding: 48px 20px 160px;
+   }
+
+   .Intro h1,
+   .Intro:hover h1{
+      padding: 0;
+      font-size: clamp(2.5rem, 10vw, 5rem);
+   }
+
+   .Intro h4,
+   .Intro:hover h4{
+      padding-top: 16px;
+      font-size: clamp(1.1rem, 4vw, 1.75rem);
+   }
+
+   .Intro h5,
+   .Intro:hover h5{
+      padding: 32px 0 0;
+      color: rgb(162, 213, 255);
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      text-shadow: 0 0 10px rgba(88, 168, 173, 0.6);
+   }
+
+   .me{
+      right: 12px;
+      height: min(38vh, 280px);
+      max-width: 45vw;
+   }
+
+   .HardSkills h4{
+      padding: 20px 16px;
+      font-size: clamp(1.15rem, 3.5vw, 1.75rem);
+   }
+
+   .HardSkillsImage img{
+      max-width: 90%;
+   }
+
+   .HardSkill{
+      box-sizing: border-box;
+      width: auto;
+      min-width: 100px;
+      max-width: calc(100vw - 24px);
+      padding: 0 12px;
+   }
+
+   .HardSkill h3,
+   .SoftSkill h3{
+      font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+   }
+
+   .Statment{
+      box-sizing: border-box;
+      height: auto;
+      flex-direction: column;
+      padding: 24px 16px;
+   }
+
+   .panel1{
+      box-sizing: border-box;
+      width: 100%;
+      height: auto;
+      padding: 24px 0;
+   }
+
+   .panel1 h1{
+      padding: 16px clamp(16px, 5vw, 40px);
+      font-size: clamp(2rem, 7vw, 4rem);
+      overflow-wrap: anywhere;
+   }
+
+   .panel1 h2{
+      padding: 16px clamp(16px, 5vw, 40px);
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+      overflow-wrap: anywhere;
+   }
+
+   .panel1 h3{
+      padding: 0 clamp(16px, 5vw, 40px);
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      overflow-wrap: anywhere;
+   }
+
+   .refrences{
+      box-sizing: border-box;
+      width: 100%;
+      height: auto;
+      padding-bottom: 24px;
+   }
+
+   .vertbox{
+      float: none;
+      height: auto;
+      padding: 12px 0;
+      text-align: center;
+   }
+
+   .headerbar{
+      margin: 0;
+      font-size: clamp(2rem, 8vw, 4rem);
+   }
+
+   .headerbar br{
+      display: none;
+   }
+
+   .box1,
+   .box1:hover{
+      box-sizing: border-box;
+      width: min(100% - 24px, 600px);
+      height: auto;
+      min-height: 220px;
+      margin: 20px auto;
+      padding: 16px;
+      transform: none;
+   }
+
+   .name{
+      font-size: clamp(1rem, 4vw, 1.5rem);
+      overflow-wrap: anywhere;
+   }
+
+   .title,
+   .connectionDesc{
+      font-size: clamp(0.9rem, 3vw, 1.15rem);
+      overflow-wrap: anywhere;
+   }
+
+   .squareup{
+      height: auto;
+      min-height: 0;
+   }
+
+   .sqrup h1{
+      font-size: clamp(2rem, 8vw, 3.75rem);
+   }
+
+   .sqrup h2{
+      font-size: clamp(1.5rem, 5vw, 2.5rem);
+   }
+
+   .sqrup h3,
+   .sqrup h4{
+      font-size: clamp(1rem, 2.8vw, 1.25rem);
+      overflow-wrap: anywhere;
+   }
+
+   .sqrpics{
+      height: auto;
+      min-height: 220px;
+      gap: 8px;
+      padding: 24px 12px;
+   }
+
+   .sSlidshow{
+      width: auto;
+      max-width: calc(100% - 112px);
+      max-height: 60vh;
+      margin-top: 0;
+   }
+
+   .sDecoL,
+   .sDecoR{
+      width: 10%;
+   }
+
+   .sqrpicButton{
+      width: clamp(36px, 8vw, 48px);
+      height: clamp(36px, 8vw, 48px);
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
+   }
+
+   .sFeatures{
+      box-sizing: border-box;
+      height: auto;
+      flex-direction: column;
+   }
+
+   .f1,
+   .f2,
+   .f3,
+   .f1:hover,
+   .f2:hover,
+   .f3:hover{
+      box-sizing: border-box;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+      flex: 0 0 auto;
+      padding: 24px 16px;
+   }
+
+   .f1 img,
+   .f2 img,
+   .f3 img{
+      width: min(200px, 45vw) !important;
+      height: auto !important;
+   }
+
+   .f1 h3,
+   .f2 h3,
+   .f3 h3{
+      font-size: clamp(1rem, 2.8vw, 1.2rem);
+   }
+
+   .sFoot{
+      box-sizing: border-box;
+      height: auto;
+      padding-top: 24px;
+   }
+
+   .sFoot > img{
+      display: block;
+      max-width: 100%;
+      height: auto;
+      margin: 0 auto;
+   }
+
+   .sFoot > h1,
+   .sFooter h1{
+      font-size: clamp(1.75rem, 7vw, 3.5rem);
+      text-align: center;
+   }
+
+   .sCreds{
+      box-sizing: border-box;
+      height: auto;
+      flex-direction: column;
+      padding: 12px;
+   }
+
+   .sCred1,
+   .sCred2,
+   .sCred3{
+      box-sizing: border-box;
+      width: 100%;
+      height: auto;
+      flex: 0 0 auto;
+      padding: 20px 12px;
+   }
+
+   .sCred1 img,
+   .sCred2 img,
+   .sCred3 img{
+      max-width: 40vw;
+      height: auto;
+   }
+
+   .sCred1 h3,
+   .sCred2 h3,
+   .sCred3 h3{
+      font-size: clamp(0.9rem, 2.8vw, 1.2rem);
+      overflow-wrap: anywhere;
+   }
+
+   .BO,
+   .BO:hover{
+      box-sizing: border-box;
+      width: 100%;
+      height: auto;
+      min-height: 0;
+   }
+
+   .BOBanner{
+      display: block;
+      width: 100%;
+      height: auto;
+   }
+
+   .BOMAIN{
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: auto;
+   }
+
+   .LeftNeg,
+   .BOTEXT,
+   .RightNeg{
+      box-sizing: border-box;
+      float: none;
+      width: 100%;
+      height: auto;
+      padding: 16px;
+   }
+
+   .LeftNeg img,
+   .RightNeg img{
+      display: block;
+      width: min(100%, 520px) !important;
+      height: auto !important;
+      margin: 20px auto !important;
+   }
+
+   .BOTEXT h2{
+      font-size: clamp(1.5rem, 6vw, 2.5rem);
+      overflow-wrap: anywhere;
+   }
+
+   .BOTEXT h4{
+      font-size: clamp(1rem, 3vw, 1.25rem);
+      overflow-wrap: anywhere;
+   }
+
+   .boCodeViewport{
+      max-height: 60vh;
+      margin: 32px 0 24px;
+   }
+
+   .boRatings{
+      margin: 32px 0 24px;
+   }
+
+   .boRatingTable{
+      font-size: clamp(0.85rem, 2.8vw, 1.1rem);
+   }
+
+   .boRatingTable th,
+   .boRatingTable td{
+      padding: 8px 6px;
+   }
+
+   .BO iframe{
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      aspect-ratio: 3 / 2;
+      margin: 32px auto !important;
+   }
+}
+
+@media (max-width: 600px){
+   .Intro,
+   .Intro:hover{
+      padding: 40px 16px 140px;
+   }
+
+   .me{
+      height: min(30vh, 220px);
+   }
+
+   .HardSkill,
+   .SoftSkill{
+      min-height: 52px;
+      height: auto;
+   }
+
+   .sDecoL,
+   .sDecoR{
+      display: none;
+   }
+
+   .sSlidshow{
+      max-width: calc(100% - 96px);
+   }
+
+   .boRatingTable th,
+   .boRatingTable td{
+      padding: 7px 4px;
+   }
 }
